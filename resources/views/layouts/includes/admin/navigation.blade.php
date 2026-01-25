@@ -9,8 +9,8 @@
         </svg>
                 </button>
                 <a href="/" class="flex ms-2 md:me-24">
-                <img src="https://flowbite.com/docs/images/logo.svg" class="h-6 me-3" alt="FlowBite Logo" />
-                <span class="self-center text-lg font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
+                <img src="{{ asset('images/logo_agendamed.png') }}" class="h-6 me-3" alt="AgendaMed Logo" />
+                <span class="self-center text-lg font-semibold whitespace-nowrap dark:text-white">AgendaMed</span>
                 </a>
             </div>
             <div class="flex items-center">
