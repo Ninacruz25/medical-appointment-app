@@ -8,15 +8,15 @@ $links = [
             'href' => route('admin.dashboard'),
             'active' => request()->routeIs('admin.dashboard'),
         ],
-        [
-            'header' => 'Hospitales',
-        ],
-        [
-            'name' => 'Dashboard',
-            'icon' => 'fa-solid fa-gauge',
-            'href' => route('admin.dashboard'),
-            'active' => false,
-        ],
+        // [
+        //     'header' => 'Hospitales',
+        // ],
+        // [
+        //     'name' => 'Dashboard',
+        //     'icon' => 'fa-solid fa-gauge',
+        //     'href' => route('admin.dashboard'),
+        //     'active' => false,
+        // ],
     ];
 @endphp
 
