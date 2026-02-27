@@ -16,8 +16,11 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.10.1",
         "livewire/livewire": "^3.6.4",
+        "rappasoft/laravel-livewire-tables": "^3.7",
         "spatie/laravel-permission": "^6.24",
-        "wireui/wireui": "*"
+        "wireui/wireui": "*",
+        "yajra/laravel-datatables-buttons": "^12.3",
+        "yajra/laravel-datatables-oracle": "^12.7"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
