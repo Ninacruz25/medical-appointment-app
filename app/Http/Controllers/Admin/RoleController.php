@@ -73,7 +73,7 @@ class RoleController extends Controller
     {
         // Validar que se inserte bien y que excluya la fila que se edita
         $request->validate([
-            'name' => 'required|unique:roles,name,',
+            'name' => 'required|unique:roles,name,' . $role->id,
         ]);
 
         // si pasa la validacion, actualizará el rol
@@ -96,7 +96,30 @@ class RoleController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(Role $role)
-    {
+    {   
+        // if($role->id <=5) {
+        //     session()->flash('swal', [
+        //     'icon' => 'error',
+        //     'title' => 'Error',
+        //     'text' => 'No puedes borrar este rol'
+        //     ]);
+        //     return redirect(route('admin.roles.index'));
+        // }
+
+        // 1. definir los roles
+        $protectedRoles = ['admin', 'Doctor', 'Super Admin', 'paciente', 'Recepcionista'];
+
+        // 2. Revisa si el rol actual está en los roles protegidos
+        if (in_array($role->name, $protectedRoles)) {
+            session()->flash('swal', [
+                'icon' => 'error',
+                'title' => 'Acción denegada',
+                'text' => 'No puedes borrar este rol'
+            ]);
+
+            return redirect(route('admin.roles.index'));
+        }
+
         // Borrar el rol
         $role->delete();
 

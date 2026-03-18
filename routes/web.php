@@ -17,4 +17,7 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
     Route::resource('roles', RoleController::class);
+    Route::prefix('admin')
+        ->name('admin.')
+        ->group(base_path('routes/admin.php'));
 });
