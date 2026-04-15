@@ -13,6 +13,7 @@
 ]">
 
 <x-wire-card>
+    <x-validation-errors class="mb-4"/>
     <form action="{{ route('admin.users.store') }}" method="POST">
         @csrf
         <div class="space-y-4">
@@ -23,6 +24,15 @@
                     placeholder="Nombre del usuario" 
                     required
                     :value="old('name')">
+                </x-wire-input>
+                <x-wire-input
+                    label="Correo electrónico" 
+                    name="email" 
+                    type="email"
+                    placeholder="Correo electrónico del usuario" 
+                    autocomplete="email"
+                    required
+                    :value="old('email')">
                 </x-wire-input>
                 <x-wire-input
                     label="Contraseña" 
@@ -65,6 +75,7 @@
                 requiared
                 placeholder="Ej. Calle 90 283"
                 autocomplete="street-address"
+                :value="old('address')"
             ></x-wire-input>
 
             <div class="space-y-1">
