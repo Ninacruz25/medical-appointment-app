@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
         // Lammar a los seeder creados
         $this->call(RoleSeeder::class);
         $this->call(UserSeeder::class);
+        $this->call(BloodTypeSeeder::class);
 
         // Crear usuario de prueba
         // User::factory()->create([
