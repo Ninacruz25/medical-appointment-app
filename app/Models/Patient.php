@@ -8,8 +8,8 @@ class Patient extends Model
 {
     protected $fillable = [
         'allergies',
-        'chronic_diseases',
-        'surgerical_history',
+        'chronic_conditions',
+        'surgical_history',
         'family_history',
         'observations',
         'emergency_contact_name',

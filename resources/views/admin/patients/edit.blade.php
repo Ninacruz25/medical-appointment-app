@@ -16,13 +16,13 @@
     @csrf
     @method('PUT')
     {{-- Encabezado con foto y acciones --}}
-    <x-wire-card>
+    <x-wire-card class="mb-8">
         <div class="lg:flex lg:justify-between lg:items-center">
             <div class="flex items-center">
                 <img src="{{ $patient->user->profile_photo_url }}" alt="{{ $patient->user->name }}"
                 class="h-20 w-20 rounded-full object-cover object-center">
                 <div>
-                    <h2 class="text-2xl font-bold text-gray-900">{{ $patient->user->name }}</h2>
+                    <h2 class="text-2xl font-bold text-gray-900 ml-4">{{ $patient->user->name }}</h2>
                 </div>
             </div>
             <div class="flex space-x-3 mt6 lg:mt-0">
@@ -107,13 +107,15 @@
                 {{-- contenido de tab 1: datos personales --}}
                 <div x-show="tab === 'datos-personales'">
                     <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded-r-lg shadow-sm">
-                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 
                             {{-- Lado izquierdo: Información --}}
                             <div class="flex items-start">
                                 <div class="flex-shrink-0">
                                     <i class="fa-solid fa-user-gear text-blue-500 text-xl mt-1"></i>
-                                    <div class="ml-3">
+                                    
+                                </div>
+                                <div class="ml-3">
                                         <h3 class="text-sm font-bold text-blue-800">
                                             Edición de cuenta de usuario
                                         </h3>
@@ -132,8 +134,77 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="grid lg:grid-cols-2 gap-4">
+                            <div>
+                                <span class="text-gray-500 font-semibold">Teléfono:</span>
+                                <span class="text-gray-900 text-sm ml-1">{{ $patient->user->phone }}</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-500 font-semibold">Email:</span>
+                                <span class="text-gray-900 text-sm ml-1">{{ $patient->user->email }}</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-500 font-semibold">Dirección:</span>
+                                <span class="text-gray-900 text-sm ml-1">{{ $patient->user->address }}</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                    {{-- contenido de tab 2: antecedentes --}}
+                    <div x-show="tab === 'antecedentes'" style="display: none;">
+                        <div class="grid lg:grid-cols-2 gap-4">
+                            <div>
+                                <x-wire-textarea label="Alergias conocidas" name="allergies">
+                                    {{ old('allergies', $patient->allergies) }}
+                                </x-wire-textarea>
+                            </div>
+                            <div>
+                                <x-wire-textarea label="Enfermedades crónicas" name="chronic_conditions">
+                                    {{ old('chronic_conditions', $patient->chronic_conditions) }}
+                                </x-wire-textarea>
+                            </div>
+                            <div>
+                                <x-wire-textarea label="Antecedentes quirúrgicos" name="surgical_history">
+                                    {{ old('surgical_history', $patient->surgical_history) }}
+                                </x-wire-textarea>
+                            </div>
+                            <div>
+                                <x-wire-textarea label="Antecedentes familiares" name="family_history">
+                                    {{ old('family_history', $patient->family_history) }}
+                                </x-wire-textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- contenido de tab 3: información general --}}
+                    <div x-show="tab === 'informacion-general'" style="display: none;">
+                        <x-wire-native-select label="Tipo de Sangre" class="mb-4" name="blood_type_id">
+                            <option value="">Selecciona un tipo de sangre</option>
+                            @foreach($bloodTypes as $bloodType)
+                                <option value="{{$bloodType->id}}" @selected(old('blood_type_id', $patient->blood_type_id) == $bloodType->id)>
+                                    {{$bloodType->name}}
+                                </option>
+                            @endforeach
+                        </x-wire-native-select>
+                        <x-wire-textarea label="Observaciones" name="observations">
+                            {{ old('observations', $patient->observations) }}
+                        </x-wire-textarea>
+                    </div>
+
+                    {{-- contenido de tab 4: contacto de emergencia --}}
+                    <div x-show="tab === 'contacto-emergencia'" style="display: none;">
+                        <div class="space-y-4">
+                            <x-wire-input label="Nombre de contacto" name="emergency_contact_name"
+                                          value=" {{old('emergency_contact_name', $patient->emergency_contact_name) }} "/>
+
+                            <x-wire-phone label="Teléfono de contacto" name="emergency_contact_phone" mask="(###) ###-####" placeholder="(999) 999-9999"
+                                          value=" {{old('emergency_contact_phone', $patient->emergency_contact_phone) }} "/>
+
+                            <x-wire-input label="Relación con el contacto" name="emergency_contact_relationship" placeholder="Familiar, amigo, etc."
+                                          value=" {{old('emergency_contact_relationship', $patient->emergency_contact_relationship) }} "/>
+                        </div>
+                    </div>
 
             </div>
         </div>
