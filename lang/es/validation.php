@@ -291,5 +291,15 @@ return [
         'emergency_contact_name' => 'nombre del contacto de emergencia',
         'emergency_contact_phone' => 'teléfono del contacto de emergencia',
         'emergency_contact_relationship' => 'relación del contacto',
+
+        'Cardiology' => 'Cardiología',
+        'Dermatology' => 'Dermatología',
+        'Neurology' => 'Neurología',
+        'Pediatrics' => 'Pediatría',
+        'Psychiatry' => 'Psiquiatría',
+        'Oncology' => 'Oncología',
+        'Orthopedics' => 'Ortopedia',
+        'Gastroenterology' => 'Gastroenterología',
+        
     ],
 ];

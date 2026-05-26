@@ -10,6 +10,8 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use App\Models\Patient;
+use App\Models\Doctor;
 
 class User extends Authenticatable
 {
@@ -73,5 +75,8 @@ class User extends Authenticatable
     // Relación uno a uno con Patient
     public function patient(){
         return $this->hasOne(Patient::class);
+    }
+    public function doctor(){
+        return $this->hasOne(Doctor::class);
     }
 }
