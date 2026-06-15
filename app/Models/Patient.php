@@ -17,13 +17,23 @@ class Patient extends Model
         'emergency_contact_relationship',
     ];
 
-    // Relación uno a uno inversa con Patient
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    // Relación uno a muchos con BloodType
-    public function bloodType(){
+    public function bloodType()
+    {
         return $this->belongsTo(BloodType::class);
+    }
+
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class);
+    }
+
+    public function consultations()
+    {
+        return $this->hasManyThrough(Consultation::class, Appointment::class);
     }
 }

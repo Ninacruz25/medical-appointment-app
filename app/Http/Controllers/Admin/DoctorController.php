@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Doctor;
+use App\Models\DoctorSchedule;
 use App\Models\Specialty;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -72,11 +73,57 @@ class DoctorController extends Controller
         return redirect()->route('admin.doctors.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Doctor $doctor)
     {
         //
+    }
+
+    public function schedules(Doctor $doctor)
+    {
+        // Convierte los registros de BD al formato de key que usa Alpine: "0800_lun"
+        $existingSlots = $doctor->schedules()
+            ->get()
+            ->mapWithKeys(function ($schedule) {
+                $timeKey = str_replace(':', '', substr($schedule->start_time, 0, 5));
+                return [$timeKey . '_' . $schedule->day => true];
+            })
+            ->toArray();
+
+        return view('admin.doctors.schedules', compact('doctor', 'existingSlots'));
+    }
+
+    public function saveSchedules(Request $request, Doctor $doctor)
+    {
+        $slots = json_decode($request->input('slots_json', '{}'), true) ?? [];
+
+        $doctor->schedules()->delete();
+
+        foreach ($slots as $slotKey => $checked) {
+            if (!$checked) {
+                continue;
+            }
+
+            // slotKey: "0800_lun" → time "08:00:00", day "lun"
+            $parts = explode('_', $slotKey, 2);
+            if (count($parts) !== 2) {
+                continue;
+            }
+
+            [$timeKey, $day] = $parts;
+            $startTime = sprintf('%s:%s:00', substr($timeKey, 0, 2), substr($timeKey, 2, 2));
+
+            $doctor->schedules()->create([
+                'day'        => $day,
+                'start_time' => $startTime,
+            ]);
+        }
+
+        session()->flash('swal', [
+            'icon'  => 'success',
+            'title' => 'Horario guardado',
+            'text'  => 'El horario del doctor ha sido actualizado correctamente.',
+        ]);
+
+        return redirect()->route('admin.doctors.schedules', $doctor);
     }
 }

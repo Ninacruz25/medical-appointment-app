@@ -3,8 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\PatientController;   
+use App\Http\Controllers\Admin\PatientController;
 use App\Http\Controllers\Admin\DoctorController;
+use App\Http\Controllers\Admin\AppointmentController;
+use App\Livewire\Admin\ConsultationManager;
+use App\Livewire\Admin\AppointmentCreate;
 
 // Candado directo y explcícito en este archivo
 Route::middleware([
@@ -25,4 +28,10 @@ Route::middleware([
     Route::resource('patients', PatientController::class);
 
     Route::resource('doctors', DoctorController::class);
+    Route::get('doctors/{doctor}/schedules', [DoctorController::class, 'schedules'])->name('doctors.schedules');
+    Route::post('doctors/{doctor}/schedules', [DoctorController::class, 'saveSchedules'])->name('doctors.schedules.save');
+
+    Route::get('appointments/create', AppointmentCreate::class)->name('appointments.create');
+    Route::resource('appointments', AppointmentController::class)->except(['create']);
+    Route::get('appointments/{appointment}/consultation', ConsultationManager::class)->name('appointments.consultation');
 });

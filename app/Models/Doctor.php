@@ -12,13 +12,23 @@ class Doctor extends Model
         'biography',
     ];
 
-    // Relación uno a uno inversa con User
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    // Relación uno a muchos con Specialty
-    public function specialty(){
+    public function specialty()
+    {
         return $this->belongsTo(Specialty::class);
+    }
+
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class);
+    }
+
+    public function schedules()
+    {
+        return $this->hasMany(DoctorSchedule::class);
     }
 }
