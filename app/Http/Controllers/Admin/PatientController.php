@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Patient;
 use App\Models\BloodType;
+use App\Models\Insurance;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -47,7 +48,8 @@ class PatientController extends Controller
     public function edit(Patient $patient)
     {
         $bloodTypes = BloodType::all();
-        return view('admin.patients.edit', compact('patient', 'bloodTypes'));
+        $insurances = Insurance::where('status', true)->get();
+        return view('admin.patients.edit', compact('patient', 'bloodTypes', 'insurances'));
     }
 
     /**
@@ -57,6 +59,7 @@ class PatientController extends Controller
     {
         $data = $request->validate([
             'blood_type_id' => 'nullable|exists:blood_types,id',
+            'insurance_id' => 'nullable|exists:insurances,id',
             'allergies' => 'nullable|string|min:3|max:255',
             'chronic_conditions' => 'nullable|string|min:3|max:255',
             'surgical_history' => 'nullable|string|min:3|max:255',

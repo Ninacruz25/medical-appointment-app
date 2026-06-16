@@ -3,7 +3,7 @@
     // Definir que campos pertenecen a cada pestaña para detetar errores
     $errorGroups = [
         'antecedentes' => ['allergies', 'chronic_conditions', 'surgical_history', 'family_history'],
-        'informacion-general' => ['blood_type', 'observations'],
+        'informacion-general' => ['blood_type_id', 'insurance_id', 'observations'],
         'contacto-emergencia' => ['emergency_contact_name', 'emergency_contact_phone', 'emergency_contact_relationship'],
     ];
     // Pestaña por defecto
@@ -61,7 +61,7 @@
         <div x-data="{tab: '{{ $activeTab }}'}">
 
             {{-- Menú de pestañas --}}
-            {{-- <div class="border-b border-200 gray-200"> --}}
+            <ul class="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 border-b border-gray-200 mb-6">
 
                     {{-- Datos personales --}}
                     <li class="me-2">
@@ -84,9 +84,9 @@
                         <a href="#" x-on:click="tab = 'antecedentes'"
                         :class="{
                             'text-red-600 border-red-600': {{ $hasError ? 'true' : 'false' }} && tab !== 'antecedentes',
-                            'text-blue-600 border-blue-600 active': tab === 'antecedentes' && {{ $hasError ? 'true' : 'false' }},
+                            'text-blue-600 border-blue-600 active': tab === 'antecedentes' && !{{ $hasError ? 'true' : 'false' }},
                             'text-red-600 border-red-600 active': tab === 'antecedentes' && {{ $hasError ? 'true' : 'false' }},
-                            'border-transparent hover:text-blue-600 hover:border-gray-300': tab !== 'antecedentes' && {{ $hasError ? 'true' : 'false' }}
+                            'border-transparent hover:text-blue-600 hover:border-gray-300': tab !== 'antecedentes' && !{{ $hasError ? 'true' : 'false' }}
                         }"
                         class="inline-flex items-center justify-center p-4 border-b-2 rounded-t-lg group transition-colors duration-200
                         {{ $hasError ? 'text-red-600 border-red-600' : '' }}"
@@ -106,9 +106,9 @@
                         <a href="#" x-on:click="tab = 'informacion-general'"
                         :class="{
                             'text-red-600 border-red-600': {{ $hasError ? 'true' : 'false' }} && tab !== 'informacion-general',
-                            'text-blue-600 border-blue-600 active': tab === 'informacion-general' && {{ $hasError ? 'true' : 'false' }},
+                            'text-blue-600 border-blue-600 active': tab === 'informacion-general' && !{{ $hasError ? 'true' : 'false' }},
                             'text-red-600 border-red-600 active': tab === 'informacion-general' && {{ $hasError ? 'true' : 'false' }},
-                            'border-transparent hover:text-blue-600 hover:border-gray-300': tab !== 'informacion-general' && {{ $hasError ? 'true' : 'false' }}
+                            'border-transparent hover:text-blue-600 hover:border-gray-300': tab !== 'informacion-general' && !{{ $hasError ? 'true' : 'false' }}
                         }"
                         class="inline-flex items-center justify-center p-4 border-b-2 rounded-t-lg group transition-colors duration-200"
                         :aria-current="tab === 'informacion-general' ? 'page' : undefined">
@@ -127,9 +127,9 @@
                         <a href="#" x-on:click="tab = 'contacto-emergencia'"
                         :class="{
                             'text-red-600 border-red-600': {{ $hasError ? 'true' : 'false' }} && tab !== 'contacto-emergencia',
-                            'text-blue-600 border-blue-600 active': tab === 'contacto-emergencia' && {{ $hasError ? 'true' : 'false' }},
+                            'text-blue-600 border-blue-600 active': tab === 'contacto-emergencia' && !{{ $hasError ? 'true' : 'false' }},
                             'text-red-600 border-red-600 active': tab === 'contacto-emergencia' && {{ $hasError ? 'true' : 'false' }},
-                            'border-transparent hover:text-blue-600 hover:border-gray-300': tab !== 'contacto-emergencia' && {{ $hasError ? 'true' : 'false' }}
+                            'border-transparent hover:text-blue-600 hover:border-gray-300': tab !== 'contacto-emergencia' && !{{ $hasError ? 'true' : 'false' }}
                         }"
                         class="inline-flex items-center justify-center p-4 border-b-2 rounded-t-lg group transition-colors duration-200"
                         :aria-current="tab === 'contacto-emergencia' ? 'page' : undefined">
@@ -140,7 +140,7 @@
                         @endif
                         </a>
                     </li>
-            {{--</div> --}}
+            </ul>
             {{-- contenido de los tabs --}}
                 {{-- contenido de tab 1: datos personales --}}
                 <div x-show="tab === 'datos-personales'">
@@ -187,7 +187,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
 
                     {{-- contenido de tab 2: antecedentes --}}
                     <div x-show="tab === 'antecedentes'" style="display: none;">
@@ -225,6 +224,16 @@
                                 </option>
                             @endforeach
                         </x-wire-native-select>
+
+                        <x-wire-native-select label="Seguro / Convenio" class="mb-4" name="insurance_id">
+                            <option value="">Ninguno / Particular</option>
+                            @foreach($insurances as $insurance)
+                                <option value="{{$insurance->id}}" @selected(old('insurance_id', $patient->insurance_id) == $insurance->id)>
+                                    {{$insurance->name}}
+                                </option>
+                            @endforeach
+                        </x-wire-native-select>
+
                         <x-wire-textarea label="Observaciones" name="observations">
                             {{ old('observations', $patient->observations) }}
                         </x-wire-textarea>

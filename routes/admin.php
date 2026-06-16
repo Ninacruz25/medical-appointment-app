@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\PatientController;
 use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\Admin\AppointmentController;
+use App\Http\Controllers\Admin\InsuranceController;
 use App\Livewire\Admin\ConsultationManager;
 use App\Livewire\Admin\AppointmentCreate;
 
@@ -26,6 +27,8 @@ Route::middleware([
     Route::resource('users', UserController::class);
 
     Route::resource('patients', PatientController::class);
+
+    Route::resource('insurances', InsuranceController::class);
 
     Route::resource('doctors', DoctorController::class);
     Route::get('doctors/{doctor}/schedules', [DoctorController::class, 'schedules'])->name('doctors.schedules');
